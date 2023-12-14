@@ -1,5 +1,5 @@
-﻿﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@{
+    ViewData["Title"] = "Trang Chủ";
 }
 
 <!DOCTYPE html>
@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang Web Của Bạn</title>
+    <title>@ViewData["Title"]</title>
 
     <style>
         body {
@@ -52,6 +52,10 @@
             border: 1px solid #ccc;
             padding: 10px;
             margin-bottom: 20px;
+            width: 23%;
+            display: inline-block;
+            margin-right: 2%;
+            vertical-align: top;
         }
 
             .product-card img {
@@ -85,7 +89,13 @@
 <body>
     <header>
         <h1>Trang Web Của Bạn</h1>
-       
+        <nav>
+            <ul>
+                <li><a href="#home">Trang Chủ</a></li>
+                <li><a href="#products">Sản Phẩm</a></li>
+                <li><a href="#contact">Liên Hệ</a></li>
+            </ul>
+        </nav>
     </header>
 
     <section id="products">
@@ -93,7 +103,7 @@
         <!-- Đây là nơi để hiển thị danh sách sản phẩm -->
         <!-- Ví dụ: -->
         <div class="product-card">
-            <img src="product1.jpg" alt="Product 1">
+            <img src="805117bc-bd2c-4386-8ae5-5a3ff92bde49.png" alt="Product 1">
             <div class="product-info">
                 <h4>Tên Sản Phẩm 1</h4>
                 <p>Mô Tả Sản Phẩm 1</p>
@@ -131,6 +141,38 @@
                 <button type="button">Thêm vào Giỏ Hàng</button>
             </div>
         </div>
+        <!-- Trong trang HTML của bạn -->
+        <div id="products"></div>
+
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $.ajax({
+                    url: '/Home/GetBooks', // Đặt đường dẫn action của bạn ở đây
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        displayBooks(data);
+                    },
+                    error: function (error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+
+                function displayBooks(books) {
+                    var productsContainer = $('#products');
+                    productsContainer.empty();
+
+                    books.forEach(function (book) {
+                        var productCard = $('<div class="product-card">');
+                        productCard.append('<img src="' + book.ImageUrl + '" alt="' + book.Title + '">');
+                        productCard.append('<div class="product-info"><h4>' + book.Title + '</h4><p>' + book.Description + '</p><p>Giá: $' + book.Price + '</p><button type="button">Thêm vào Giỏ Hàng</button></div>');
+
+                        productsContainer.append(productCard);
+                    });
+                }
+            });
+        </script>
 
         <!-- Thêm các sản phẩm khác vào đây -->
     </section>
