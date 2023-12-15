@@ -21,6 +21,7 @@ namespace BookShopWeb.Areas.Admin.Controllers
             _unitOfWork = unitOfWork;
             _webhost = webhost;
         }
+
         public IActionResult Index()
         {
             List<Book> books = _unitOfWork.BookRepository.GetAll("Category").ToList();
